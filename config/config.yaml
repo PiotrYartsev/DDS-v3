@@ -1,4 +1,4 @@
-version: 0.1
+version: 0.2 #Changed some of the setting for the temporal database config
 
 # Rucio configuration
 rucio: 

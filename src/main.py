@@ -107,12 +107,31 @@ def main():
     
     #TODO: Check if the files already exist in the temporal check database
     #if they dont, add them and put a timestamp
+    
     #if they do, check if today-timestamp>config['temporal_check']['threshold']
     #if it is, add the file to the output report
+    #save the changed database
 
-    
-    
 
+    #TODO: make the output report
+    #       make it work with the output format
+    
+    #TODO: make the optimization changes
+    # implement multithreading
+    # implement the chunk loading of the files
+
+    #TODO: make the mock Rucio mode work 
+
+    #TODO: Make the debug mode work
+    
+    #TODO: Make the real Rucio mode work NOTE: this requires me to contact Lene, maybe Florido
+
+    #TODO: Implement replicas check
+    #       check if the replicas are in the same RSE
+    #       check if the replicas are in another RSE 
+    #       mark the file as it can be restored
+
+    #TODO: Implement the duplicate files search among the dark data. 
     logger.info("Dark Data Search completed successfully")
 
 if __name__ == "__main__":
