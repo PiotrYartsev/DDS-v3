@@ -12,26 +12,26 @@ The Dark Data Search Toolkit v3 (DDS-v3) is an advanced tool designed to identif
 - Flexible output formats (JSON, CSV)
 - Optimized for large-scale storage systems
 
-##Parameters
+## Parameters
 
 - --rse: (Mandatory) Specifies the Rucio Storage Element to analyze
 - --threads: (Optional) Number of threads for parallel processing (default: 1)
 - --output-format: (Optional) Desired format for results (default: JSON)
 
-##Output
+## Output
 The tool generates a report containing:
 
 - List of dark data files
 - List of missing files
 - Summary statistics
 
-##Requirements
+## Requirements
 
 - Python 3.7+
 - Rucio client library
 - Access to Rucio server and storage systems
 
-##Contributing
+## Contributing
 Contributions are welcome! Please feel free to submit a Pull Request.
 
-##Future Enhancements
+## dFuture Enhancements
