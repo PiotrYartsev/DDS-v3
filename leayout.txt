@@ -1,0 +1,39 @@
+Here's a breakdown of each component:
+
+src/ directory:
+
+main.py: Entry point of the application, handles argument parsing and orchestrates the overall process.
+rucio_interface.py: Contains all functions for interacting with Rucio.
+storage_interface.py: Handles interactions with storage systems and data dumps.
+comparison_engine.py: Implements the core comparison logic.
+report_generator.py: Handles the creation and formatting of reports.
+utils.py: Contains utility functions used across the application.
+
+
+tests/ directory:
+
+Contains unit tests for each module in the src/ directory.
+
+
+config/ directory:
+
+config.yaml: Stores configuration parameters that can be easily modified without changing the code.
+
+
+docs/ directory:
+
+Contains documentation for users and developers.
+
+
+scripts/ directory:
+
+Holds utility scripts, like environment setup.
+
+
+Root directory files:
+
+.gitignore: Specifies intentionally untracked files to ignore.
+README.md: Provides an overview of the project (as we wrote earlier).
+requirements.txt: Lists all Python dependencies.
+setup.py: Used for packaging and distribution of the tool.
+LICENSE: Contains the license information for the project.
