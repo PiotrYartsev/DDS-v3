@@ -1,4 +1,4 @@
-from rucio.client import Client
+"""from rucio.client import Client
 
 class RucioFunctions:
     rucioclient = Client()
@@ -6,4 +6,4 @@ class RucioFunctions:
     @classmethod
     def list_rses(cls):
         return cls.rucioclient.list_rses()
-    
+    """

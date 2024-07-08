@@ -35,3 +35,23 @@ The tool generates a report containing:
 Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## dFuture Enhancements
+
+
+@startuml
+start
+:Parse Command Line Arguments;
+:Load Configuration;
+:Setup Logging;
+:Initialize Rucio Client;
+:Retrieve Rucio File List;
+:Retrieve Storage (RSE) File List;
+fork
+  :Identify Dark Data;
+fork again
+  :Identify Missing Data;
+end fork
+:Generate Report;
+:Output Report (JSON/CSV/TXT);
+:Cleanup and Close Connections;
+stop
+@enduml

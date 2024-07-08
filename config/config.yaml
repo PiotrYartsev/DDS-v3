@@ -2,17 +2,16 @@ version: 0.1
 
 # Rucio configuration
 rucio: 
-  # URL of the Rucio server
-  server_url: "https://rucio.example.com"
-  # Default account to use for Rucio operations
-  account: "service_account"
-  # Authentication type (e.g., "userpass", "x509", "oidc")
-  auth_type: "x509"
-  # Path to the client certificate for x509 authentication
-  client_cert: "/path/to/client_cert.pem"
-  # Client key for x509 authentication
-  client_key: "/path/to/client_key.pem"
-  # Timeout for Rucio API calls (in seconds)
+  
+  rucio_host : https://act-ldmx.cern-test.uiocloud.no:443
+  auth_host : https://act-ldmx.cern-test.uiocloud.no:443
+  ca_cert : location/cacert.pem
+  request_retries : 3
+  auth_type : userpass
+  username : ldmx-user
+  password : ldmx4rucio
+  account : ldmx-user
+  metadata_default_plugin : JSON
   timeout: 60
 
 # Performance settings
@@ -42,7 +41,7 @@ logging:
   # Log level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
   level: "INFO"
   # Log file location
-  file: "/path/to/dds_v3.log"
+  file: "logs/dds_v3.log"
   # Maximum log file size in bytes before rotating
   max_size: 10485760  # 10 MB
   # Number of backup log files to keep
@@ -54,7 +53,7 @@ temporal_check:
   # Number of days between checks to confirm issues
   days_between_checks: 7
   # Database file for storing temporal data
-  database_file: "/path/to/temporal_db.sqlite"
+  database_file: "temporal_check/temporal_bad_data_database"
 
 
 # Development settings (for testing and debugging)
