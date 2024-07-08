@@ -96,12 +96,21 @@ def main():
 
     #if the database for the temporal check is not found, generate it
     try:
-        if not os.path.exists(config['temporal_check']['database_file']):
+        if not os.path.exists(config['temporal_check']['database_file']+ ".db"):
+            logger.info("Database for temporal check not found. Generating it")
             generate_SQLite_database_for_temporal_check(config['temporal_check']['database_file'])
-    
+        else:
+            logger.info("Database for temporal check found")
     except Exception as e:
-        logger.exception("An unexpected error occurred")
+        logger.exception("An unexpected error occurred with the temporal check database")
         sys.exit(f"An unexpected error occurred: {e}")
+    
+    #TODO: Check if the files already exist in the temporal check database
+    #if they dont, add them and put a timestamp
+    #if they do, check if today-timestamp>config['temporal_check']['threshold']
+    #if it is, add the file to the output report
+
+    
     
 
     logger.info("Dark Data Search completed successfully")

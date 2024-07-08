@@ -16,14 +16,13 @@ lines = open_file.readlines()
 
 #Remove about 20% of the lines at random
 lines = [line for line in lines if random.random() > 0.2]
-
 #Change about 20% of the lines by putting a random character in a random position in the line
-def change_line(line):
-    line = list(line)
-    line[random.randint(0, len(line)-1)] = random.choice(string.ascii_letters)
-    return ''.join(line)
+for line in lines[-10:]:
+        #add an extra letter a at a random position
+        position = random.randint(0, len(line))
+        line = line[:position] + 'a' + line[position:]
+        lines.append(line)
 
-lines = [change_line(line) if random.random() > 0.2 else line for line in lines]
 
 
 open_file.close()
