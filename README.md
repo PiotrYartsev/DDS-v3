@@ -38,4 +38,4 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 
 ## Flowchart
-![Flowchart](out/flow.yaml/flow.yaml.png)
+![Flowchart](out/flow/flow.png)
