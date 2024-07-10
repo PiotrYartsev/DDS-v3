@@ -166,3 +166,9 @@ rsedump/
 ruciodump/
 rsedump/LUND_GRIDFTP-RSE-2023_10_06.txt
 ruciodump/LUND_GRIDFTP-RUCIO-2023_10_06.txt
+
+#anything in the output folder
+output/
+
+#anything in the temporal_check folder
+temporal_check/
