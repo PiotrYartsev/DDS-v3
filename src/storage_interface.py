@@ -3,7 +3,7 @@ import sys
 import sqlite3
 from src.log_config import logger
 import datetime
-import json
+
 
 
 def load_files_dump_from_RSE(directory, rse_name, logger):
@@ -91,6 +91,7 @@ def write_report(report, rse, report_type, output_format, output_dir):
     logger.info(f"Writing report in {output_format} format")
     
     if output_format == 'json':
+        import json
         # Construct the dictionary
         report_data = {
             "rse": rse,
@@ -101,12 +102,28 @@ def write_report(report, rse, report_type, output_format, output_dir):
         # Write the dictionary to a file
         with open(f"{output_dir}/{report_type}_report.json", 'w') as f:
             json.dump(report_data, f, indent=4)
+    elif output_format == 'csv':
+        import csv
+        # Define the CSV file path
+        csv_file_path = f"{output_dir}/{report_type}_report.csv"
+        
+        # Get the current date in ISO format
+        current_date = datetime.datetime.now().isoformat()
+        
+        # Open the CSV file for writing
+        with open(csv_file_path, mode='w', newline='') as file:
+            writer = csv.writer(file)
+            
+            # Write the header
+            writer.writerow(['File Name', 'RSE', 'Date'])
+            
+            # Write the file names along with RSE and date
+            for file_name in report:
+                writer.writerow([file_name, rse, current_date])
+        
     elif output_format == 'txt':
         with open(output_dir+'/'+report_type+'_report.txt', 'w') as f:
             [f.write(item+'\n') for item in report]
-            """elif output_format == 'csv':
-                with open(output_dir+'/'+report_type+'_report.csv', 'w') as f:
-                    [f.write(item+'\n') for item in report]"""
     
     else:
         logger.error(f"Error: Unknown output format {output_format}")
