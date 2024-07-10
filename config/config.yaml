@@ -1,8 +1,7 @@
-version: 0.2 #Changed some of the setting for the temporal database config
+version: 0.3 #defined the new output directory
 
 # Rucio configuration
 rucio: 
-  
   rucio_host : https://act-ldmx.cern-test.uiocloud.no:443
   auth_host : https://act-ldmx.cern-test.uiocloud.no:443
   ca_cert : location/cacert.pem
