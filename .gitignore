@@ -172,3 +172,10 @@ output/
 
 #anything in the temporal_check folder
 temporal_check/
+output/dark_data_report.csv
+output/dark_data_report.json
+output/dark_data_report.txt
+output/missing_data_report.csv
+output/missing_data_report.json
+output/missing_data_report.txt
+temporal_check/temporal_bad_data_database.db
