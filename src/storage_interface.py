@@ -3,6 +3,7 @@ import sys
 import sqlite3
 from src.log_config import logger
 import datetime
+import json
 
 
 def load_files_dump_from_RSE(directory, rse_name, logger):
@@ -90,14 +91,23 @@ def write_report(report, rse, report_type, output_format, output_dir):
     logger.info(f"Writing report in {output_format} format")
     
     if output_format == 'json':
-        with open(output_dir+'/'+report_type+'_report.json', 'w') as f:
-            [f.write(item+"\n") for item in report]
-    elif output_format == 'csv':
-        with open(output_dir+'/'+report_type+'_report.csv', 'w') as f:
-            [f.write(item+'\n') for item in report]
+        # Construct the dictionary
+        report_data = {
+            "rse": rse,
+            "date": datetime.datetime.now().isoformat(),
+            "files": [{"name": item} for item in report]
+        }
+
+        # Write the dictionary to a file
+        with open(f"{output_dir}/{report_type}_report.json", 'w') as f:
+            json.dump(report_data, f, indent=4)
     elif output_format == 'txt':
         with open(output_dir+'/'+report_type+'_report.txt', 'w') as f:
             [f.write(item+'\n') for item in report]
+            """elif output_format == 'csv':
+                with open(output_dir+'/'+report_type+'_report.csv', 'w') as f:
+                    [f.write(item+'\n') for item in report]"""
+    
     else:
         logger.error(f"Error: Unknown output format {output_format}")
         sys.exit(f"Error: Unknown output format {output_format}")
