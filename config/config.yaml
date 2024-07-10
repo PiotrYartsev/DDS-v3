@@ -33,7 +33,7 @@ reporting:
     - "csv"
     - "txt"
   # Directory to store reports
-  output_directory: "/path/to/reports"
+  output_directory: "output"
 
 
 # Logging configuration
@@ -51,7 +51,7 @@ logging:
 # Temporal consistency checking
 temporal_check:
   # Number of days between checks to confirm issues
-  days_between_checks: 7
+  days_between_checks: -1
   # Database file for storing temporal data
   database_file: "temporal_check/temporal_bad_data_database"
 

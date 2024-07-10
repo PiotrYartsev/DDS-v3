@@ -6,7 +6,7 @@ import yaml
 import sys
 import os
 
-from src.storage_interface import load_files_dump_from_RSE,generate_SQLite_database_for_temporal_check 
+from src.storage_interface import load_files_dump_from_RSE,generate_SQLite_database_for_temporal_check,temporal_check,write_report
 from src.log_config import logger
 # TODO: Uncomment these imports when the modules are implemented
 """
@@ -71,6 +71,7 @@ def main():
     threads = args.threads or config['performance']['default_threads']
     output_format = args.output_format or config['reporting']['default_format']
     logger.info(f"Using {threads} threads and {output_format} output format")
+    output_dir="output" or config['reporting']['output_dir'] 
 
     try:
         # Load the RSE and Rucio dump files
@@ -87,8 +88,7 @@ def main():
         logger.info(f"Dark data: {len(dark_data)}")
         logger.info(f"Missing data: {len(missing_data)}")
 
-        # TODO: Generate and output the report
-        # report = generate_report(dark_data, missing_data, args.rse, output_format)
+        
         logger.info("Report generation placeholder - not yet implemented")
     except Exception as e:
         logger.exception("An unexpected error occurred")
@@ -105,14 +105,41 @@ def main():
         logger.exception("An unexpected error occurred with the temporal check database")
         sys.exit(f"An unexpected error occurred: {e}")
     
-    #TODO: Check if the files already exist in the temporal check database
-    #if they dont, add them and put a timestamp
-    
-    #if they do, check if today-timestamp>config['temporal_check']['threshold']
-    #if it is, add the file to the output report
-    #save the changed database
+    try:
+        #perform the temporal check
+        missing_data_over_days_between_checks, dark_data_over_days_between_checks=temporal_check(config['temporal_check']['database_file'], args.rse , missing_data,  dark_data, config['temporal_check']['days_between_checks'])
+    except:
+        logger.exception("An unexpected error occurred with the temporal check")
+        sys.exit(f"An unexpected error occurred: {e}")
+    if len(missing_data_over_days_between_checks) == 0:
+        logger.info("No missing data found after the temporal check")
+    else:
+        logger.info("Writing the report in the format specified: {}".format(output_format))
+        logger.info("Writing missing data")
+        try:
+            write_report(missing_data_over_days_between_checks, args.rse, "missing_data", output_format,output_dir)
+        except:
+            logger.exception("An unexpected error occurred with the writing of the missing data report")
+            sys.exit(f"An unexpected error occurred: {e}")
+    if len(dark_data_over_days_between_checks) == 0:
+        logger.info("No dark data found after the temporal check")
+    else:    
+        try:
+            logger.info("Writing dark data")
+            write_report(dark_data_over_days_between_checks, args.rse, "dark_data", output_format,output_dir)
+        except:
+            logger.exception("An unexpected error occurred with the writing of the dark data report")
+            sys.exit(f"An unexpected error occurred: {e}")
+ 
 
 
+
+    # TODO: Generate and output the report
+        # report = generate_report(dark_data, missing_data, args.rse, output_format)
+
+
+
+    #TODO: add GRIDFTP address correction
     #TODO: make the output report
     #       make it work with the output format
     

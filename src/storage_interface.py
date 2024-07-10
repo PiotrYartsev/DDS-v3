@@ -2,6 +2,8 @@ import os
 import sys
 import sqlite3
 from src.log_config import logger
+import datetime
+
 
 def load_files_dump_from_RSE(directory, rse_name, logger):
     logger.info(f"Loading dump from {directory} for RSE {rse_name}")
@@ -37,3 +39,66 @@ def generate_SQLite_database_for_temporal_check(database_file):
     conn.close()
 
     logger.info("SQLite database generated successfully")
+
+def temporal_check(database_file, rse,missing_data,  dark_data, days_between_checks):
+    logger.info("Performing temporal check")
+    conn = sqlite3.connect(database_file + '.db')
+    conn.execute("PRAGMA journal_mode=WAL")  # Enable Write-Ahead Logging for better concurrency.
+    conn.execute("BEGIN")  # Start a transaction
+    c = conn.cursor()
+
+    missing_data_over_days_between_checks = set()
+    dark_data_over_days_between_checks = set()
+    # Prepare the SELECT statement
+    select_stmt_missing = "SELECT timestamp FROM missing_data WHERE file = ? and rse = ?"
+    insert_stmt_missing = "INSERT INTO missing_data (file, rse, timestamp) VALUES (?, ?, ?)"
+    delete_stmt_missing = "DELETE FROM missing_data WHERE file = ? and rse = ?"
+
+    select_stmt_dark = "SELECT timestamp FROM dark_data WHERE file = ? and rse = ?"
+    insert_stmt_dark = "INSERT INTO dark_data (file, rse, timestamp) VALUES (?, ?, ?)"
+    delete_stmt_dark = "DELETE FROM dark_data WHERE file = ? and rse = ?"
+
+    # Check each missing file
+    for file in missing_data:
+        c.execute(select_stmt_missing, (file, rse))
+        row = c.fetchone()
+        if row is None:
+            c.execute(insert_stmt_missing, (file, rse, datetime.datetime.now().isoformat()))
+        else:
+            timestamp = datetime.datetime.fromisoformat(row[0])
+            if (datetime.datetime.now() - timestamp).days > days_between_checks:
+                c.execute(delete_stmt_missing, (file, rse))
+                missing_data_over_days_between_checks.add(file)
+    for file in dark_data:
+        c.execute(select_stmt_dark, (file, rse))
+        row = c.fetchone()
+        if row is None:
+            c.execute(insert_stmt_dark, (file, rse, datetime.datetime.now().isoformat()))
+        else:
+            timestamp = datetime.datetime.fromisoformat(row[0])
+            if (datetime.datetime.now() - timestamp).days > days_between_checks:
+                c.execute(delete_stmt_dark, (file, rse))
+                dark_data_over_days_between_checks.add(file)
+    
+    conn.commit()
+    conn.close()
+    logger.info("Temporal check complete")
+    return missing_data_over_days_between_checks, dark_data_over_days_between_checks
+
+
+def write_report(report, rse, report_type, output_format, output_dir):
+    logger.info(f"Writing report in {output_format} format")
+    
+    if output_format == 'json':
+        with open(output_dir+'/'+report_type+'_report.json', 'w') as f:
+            [f.write(item+"\n") for item in report]
+    elif output_format == 'csv':
+        with open(output_dir+'/'+report_type+'_report.csv', 'w') as f:
+            [f.write(item+'\n') for item in report]
+    elif output_format == 'txt':
+        with open(output_dir+'/'+report_type+'_report.txt', 'w') as f:
+            [f.write(item+'\n') for item in report]
+    else:
+        logger.error(f"Error: Unknown output format {output_format}")
+        sys.exit(f"Error: Unknown output format {output_format}")
+    logger.info("Report written successfully")
