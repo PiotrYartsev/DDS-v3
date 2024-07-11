@@ -8,13 +8,6 @@ import os
 
 from src.storage_interface import load_files_dump_from_RSE,generate_SQLite_database_for_temporal_check,temporal_check,write_report
 from src.log_config import logger
-# TODO: Uncomment these imports when the modules are implemented
-"""
-from src.rucio_interface import get_rucio_files
-from src.storage_interface import get_storage_files
-from src.comparison_engine import compare_files
-from src.report_generator import generate_report
-"""
 
 def parse_arguments():
     """
@@ -108,7 +101,7 @@ def main():
     try:
         #perform the temporal check
         missing_data_over_days_between_checks, dark_data_over_days_between_checks=temporal_check(config['temporal_check']['database_file'], args.rse , missing_data,  dark_data, config['temporal_check']['days_between_checks'])
-    except:
+    except Exception as e:
         logger.exception("An unexpected error occurred with the temporal check")
         sys.exit(f"An unexpected error occurred: {e}")
     if len(missing_data_over_days_between_checks) == 0:
@@ -118,7 +111,7 @@ def main():
         logger.info("Writing missing data")
         try:
             write_report(missing_data_over_days_between_checks, args.rse, "missing_data", output_format,output_dir)
-        except:
+        except  Exception as e:
             logger.exception("An unexpected error occurred with the writing of the missing data report")
             sys.exit(f"An unexpected error occurred: {e}")
     if len(dark_data_over_days_between_checks) == 0:
@@ -127,7 +120,7 @@ def main():
         try:
             logger.info("Writing dark data")
             write_report(dark_data_over_days_between_checks, args.rse, "dark_data", output_format,output_dir)
-        except:
+        except Exception as e:
             logger.exception("An unexpected error occurred with the writing of the dark data report")
             sys.exit(f"An unexpected error occurred: {e}")
  
