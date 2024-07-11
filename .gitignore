@@ -171,7 +171,6 @@ ruciodump/LUND_GRIDFTP-RUCIO-2023_10_06.txt
 output/
 
 #anything in the temporal_check folder
-temporal_check/
 output/dark_data_report.csv
 output/dark_data_report.json
 output/dark_data_report.txt
