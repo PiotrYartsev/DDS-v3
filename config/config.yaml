@@ -58,6 +58,6 @@ temporal_check:
 # Development settings (for testing and debugging)
 development:
   # Enable debug mode
-  debug_mode: false
+  debug_mode: true
   # Mock Rucio responses for testing
   mock_rucio: false

@@ -65,6 +65,10 @@ def main():
     output_format = args.output_format or config['reporting']['default_format']
     logger.info(f"Using {threads} threads and {output_format} output format")
     output_dir="output" or config['reporting']['output_dir'] 
+    debug_mode=False or config['development']['debug_mode']
+    mock_mode=
+    if debug_mode:
+        logger.info("\n\n NOTE! This is running in debug mode!\n")
 
     try:
         # Load the RSE and Rucio dump files
@@ -100,7 +104,7 @@ def main():
     
     try:
         #perform the temporal check
-        missing_data_over_days_between_checks, dark_data_over_days_between_checks=temporal_check(config['temporal_check']['database_file'], args.rse , missing_data,  dark_data, config['temporal_check']['days_between_checks'])
+        missing_data_over_days_between_checks, dark_data_over_days_between_checks=temporal_check(config['temporal_check']['database_file'], args.rse , missing_data,  dark_data, config['temporal_check']['days_between_checks'],debug_mode)
     except Exception as e:
         logger.exception("An unexpected error occurred with the temporal check")
         sys.exit(f"An unexpected error occurred: {e}")

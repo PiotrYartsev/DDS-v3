@@ -45,11 +45,12 @@ def generate_SQLite_database_for_temporal_check(database_file):
 
     logger.info("SQLite database generated successfully")
 
-def temporal_check(database_file, rse,missing_data,  dark_data, days_between_checks):
-    # Check that days_between_checks is a positive integer
-    if not isinstance(days_between_checks, int) or days_between_checks <= 0:
-        logger.error(f"Error occurred while handling days_between_checks, {days_between_checks} not a positive integer")
-        raise ValueError(f"Error occurred while handling days_between_checks, {days_between_checks} not a positive integer")
+def temporal_check(database_file, rse,missing_data,  dark_data, days_between_checks,debug_mode):
+    # Check that days_between_checks is a positive integer UNLESS debug mode is on, then you can set negative numbers to force dark data 
+    if not debug_mode:
+        if not isinstance(days_between_checks, int) or days_between_checks <= 0:
+            logger.error(f"Error occurred while handling days_between_checks, {days_between_checks} not a positive integer")
+            raise ValueError(f"Error occurred while handling days_between_checks, {days_between_checks} not a positive integer")
 
     # Verify that the database file exists
     if not os.path.exists(database_file + '.db'):
