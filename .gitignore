@@ -178,5 +178,5 @@ output/dark_data_report.txt
 output/missing_data_report.csv
 output/missing_data_report.json
 output/missing_data_report.txt
-temporal_check/temporal_bad_data_database.db
+/temporal_check/temporal_bad_data_database.db
 !tests/temporal_check/temporal_bad_data_database.db
