@@ -66,7 +66,7 @@ def main():
     logger.info(f"Using {threads} threads and {output_format} output format")
     output_dir="output" or config['reporting']['output_dir'] 
     debug_mode=False or config['development']['debug_mode']
-    mock_mode=
+    mock_rucio_mode=False or config['development']['mock_rucio']
     if debug_mode:
         logger.info("\n\n NOTE! This is running in debug mode!\n")
 
